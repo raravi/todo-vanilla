@@ -2,6 +2,7 @@ let todos = [];
 let counter = 0;
 let numberOfItemsLeft = 0;
 let idOfStatusButton = 0;
+let listItemInnerHTML = '<div class="todos__toggleitem" onclick="setItemAsCompleted(this)"></div><div class="todos__deleteitem" onclick="deleteItem(this)">x</div><input type="text" name="edititem" onkeyup="itemEdited(event, this)" onblur="lostFocus(this)" class="todos__edititem"></input>';
 
 function ListItem(id, value, done = false) {
   this.id = id;
@@ -81,9 +82,8 @@ function getInput(e) {
       listElement.setAttribute("class", "todos__listitem");
     }
     listElement.setAttribute("data-id", tempItem.id);
-    //listElement.setAttribute("ondblclick", "makeItemEditable(this)");
-    //listElement.setAttribute("onkeyup", "editAnItem(event, this)");
-    listElement.innerHTML = tempItem.value + '<div class="todos__toggleitem" onclick="setItemAsCompleted(this)"></div><div class="todos__deleteitem" onclick="deleteItem(this)">x</div>';
+    listElement.setAttribute("ondblclick", "makeItemEditable(this)");
+    listElement.innerHTML = tempItem.value + listItemInnerHTML;
     let todoList = document.getElementsByClassName("todos__list")[0];
     todoList.appendChild(listElement);
 
@@ -211,19 +211,55 @@ function setItemAsCompleted(node) {
 }
 
 /*--------  Double Click an Item to Edit  ------------*/
-/*function makeItemEditable(listItem) {
-  listItem.setAttribute("contenteditable", "true");
-  listItem.focus();
+function makeItemEditable(listItem) {
+  // UPDATE DOM elements
+  // 1. Update edit item
+  let editItem = listItem.getElementsByClassName("todos__edititem")[0];
+  let itemText = listItem.innerText;
+  editItem.value = itemText.substr(0, itemText.length - 2);
+  editItem.setAttribute("class","todos__edititem todos__edititem--show");
+  editItem.focus();
 }
 
-function editAnItem(event, listItem) {
-  listItem.setAttribute("contenteditable", "false");
-  if(event.code === "Enter" && listItem.innerText !== "") {
-    console.log(listItem.innerText);
-    listItem.innerText = listItem.innerText.substr(0, listItem.innerText.length-3);
-    console.log(listItem.innerText);
+function itemEdited(event, editItem) {
+  if(event.code === "Enter" && editItem.value !== "") {
+    // UPDATE state: todos array
+    let idListItem = parseInt(editItem.parentNode.getAttribute("data-id"), 10);
+    for (let todo of todos) {
+      if (todo.id === idListItem) {
+        todo.value = editItem.value;
+        break;
+      }
+    }
+
+    // UPDATE DOM elements
+    // 1. Update edit item, listItem
+    //editItem.setAttribute("class","todos__edititem");
+    editItem.parentNode.innerHTML = editItem.value + listItemInnerHTML;
+
+    // UPDATE Local Storage
+    localStorage.setItem('todos', JSON.stringify(todos));
   }
-}*/
+}
+
+function lostFocus(editItem) {
+  // UPDATE state: todos array
+  let idListItem = parseInt(editItem.parentNode.getAttribute("data-id"), 10);
+  for (let todo of todos) {
+    if (todo.id === idListItem) {
+      todo.value = editItem.value;
+      break;
+    }
+  }
+
+  // UPDATE DOM elements
+  // 1. Update edit item, listItem
+  //editItem.setAttribute("class","todos__edititem");
+  editItem.parentNode.innerHTML = editItem.value + listItemInnerHTML;
+
+  // UPDATE Local Storage
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
 
 /*-----------  Delete the selected Item  -------------*/
 function deleteItem(node) {
@@ -307,7 +343,6 @@ function onClickStatusButton(clickedButton) {
 
 /*-----------  Clear Completed Items  ----------------*/
 function clearCompletedItems() {
-  console.log(idOfStatusButton);
   // UPDATE state: todos array, numberOfItemsLeft
   for (let i = 0 ; i < todos.length ; i++) {
     if (todos[i].done === true) {
@@ -316,8 +351,6 @@ function clearCompletedItems() {
     }
   }
   numberOfItemsLeft = todos.reduce(getNumberOfItemsLeft, 0);
-
-  console.log(idOfStatusButton);
 
   // UPDATE DOM
   // 1. Delete completed list items
@@ -350,10 +383,11 @@ function clearCompletedItems() {
 
 function setTodosFromStorage() {
   let tempTodos = JSON.parse(localStorage.getItem('todos'));
-  console.log(tempTodos);
   if (tempTodos.length !== 0) { // We have todos in Local Storage
     // UPDATE state: todos array, numberOfItemsLeft
-    todos = tempTodos;
+    tempTodos.forEach(tempTodo => {
+      todos.push(new ListItem(tempTodo.id, tempTodo.value, tempTodo.done));
+    });
     numberOfItemsLeft = todos.reduce(getNumberOfItemsLeft, 0);
     counter = todos[todos.length-1].id + 1;
     idOfStatusButton = parseInt(localStorage.getItem("idOfStatusButton"), 10);
@@ -388,9 +422,8 @@ function setTodosFromStorage() {
         }
       }
       listElement.setAttribute("data-id", todo.id);
-      //listElement.setAttribute("ondblclick", "makeItemEditable(this)");
-      //listElement.setAttribute("onkeyup", "editAnItem(event, this)");
-      listElement.innerHTML = todo.value + '<div class="todos__toggleitem" onclick="setItemAsCompleted(this)"></div><div class="todos__deleteitem" onclick="deleteItem(this)">x</div>';
+      listElement.setAttribute("ondblclick", "makeItemEditable(this)");
+      listElement.innerHTML = todo.value + listItemInnerHTML;
       let todoList = document.getElementsByClassName("todos__list")[0];
       todoList.appendChild(listElement);
     });
