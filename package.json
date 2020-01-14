@@ -1,0 +1,28 @@
+{
+  "name": "todovanilla",
+  "version": "1.0.0",
+  "description": "A simple ToDo web app using only javascript!",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "./node_modules/.bin/babel src --out-dir lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raravi/todo-vanilla.git"
+  },
+  "author": "Amith Raravi",
+  "license": "The MIT License (MIT)",
+  "bugs": {
+    "url": "https://github.com/raravi/todo-vanilla/issues"
+  },
+  "homepage": "https://github.com/raravi/todo-vanilla#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.8.3"
+  }
+}

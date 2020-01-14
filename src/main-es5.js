@@ -16,7 +16,9 @@
   /**
    * The ListItem object represents an item in the Todo List
    */
-  function ListItem(id, value, done = false) {
+  function ListItem(id, value) {
+    var done =
+      arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
     this.id = id;
     this.value = value;
     this.done = done;
@@ -30,11 +32,18 @@
   };
 
   /**
+   * This function gets the ID of list item as an Integer.
+   */
+  TodosData.prototype._getIdOfListItem = function(listItem) {
+    return parseInt(listItem.getAttribute("data-id"), 10);
+  };
+
+  /**
    * This function updates the number of items left 'To Do' on
    * the left of status bar.
    */
   TodosData.prototype._updateStatusLeft = function() {
-    const statusLeft = document.getElementsByClassName("todos__statusleft")[0];
+    var statusLeft = document.getElementsByClassName("todos__statusleft")[0];
     statusLeft.innerHTML = this.numberOfItemsLeft + " items left";
   };
 
@@ -43,9 +52,7 @@
    * the right of status bar.
    */
   TodosData.prototype._updateStatusRight = function() {
-    const statusRight = document.getElementsByClassName(
-      "todos__statusright"
-    )[0];
+    var statusRight = document.getElementsByClassName("todos__statusright")[0];
     if (this.numberOfItemsLeft === this.todos.length) {
       statusRight.setAttribute("class", "todos__statusright");
     } else {
@@ -61,7 +68,7 @@
    * the new input box.
    */
   TodosData.prototype._updateClearItems = function() {
-    const labelElement = document.getElementsByClassName(
+    var labelElement = document.getElementsByClassName(
       "newitem__clearitems"
     )[0];
     if (this.todos.length === 0) {
@@ -84,25 +91,25 @@
    * match the value in 'idOfStatusButton'.
    */
   TodosData.prototype._updateStatusButtons = function() {
-    let buttons = document.getElementsByClassName("todos_statusbutton");
-    [...buttons].forEach(button => {
-      let idOfButton = parseInt(button.getAttribute("data-id"), 10);
+    var buttons = document.getElementsByClassName("todos_statusbutton");
+    for (var i = 0; i < buttons.length; i++) {
+      var idOfButton = this._getIdOfListItem(buttons[i]);
       if (idOfButton === this.idOfStatusButton) {
-        button.setAttribute(
+        buttons[i].setAttribute(
           "class",
           "todos_statusbutton todos_statusbutton--selected"
         );
       } else {
-        button.setAttribute("class", "todos_statusbutton");
+        buttons[i].setAttribute("class", "todos_statusbutton");
       }
-    });
+    }
   };
 
   /**
    * This function hides/unhides the Todo List Items.
    */
   TodosData.prototype._updateTodos = function() {
-    let todosElement = document.getElementsByClassName("todos")[0];
+    var todosElement = document.getElementsByClassName("todos")[0];
     if (this.todos.length === 0) {
       todosElement.setAttribute("class", "todos");
     } else {
@@ -123,15 +130,16 @@
    * This function creates a new List Item in the DOM.
    */
   TodosData.prototype._createListItem = function(item) {
-    let listElement = document.createElement("li");
+    var listElement = document.createElement("li");
+    var classesListItem;
     if (item.done) {
-      let classesListItem =
+      classesListItem =
         this.idOfStatusButton === 1
           ? "todos__listitem todos__listitem--cleared todos__listitem--hidden"
           : "todos__listitem todos__listitem--cleared";
       listElement.setAttribute("class", classesListItem);
     } else {
-      let classesListItem =
+      classesListItem =
         this.idOfStatusButton === 2
           ? "todos__listitem todos__listitem--hidden"
           : "todos__listitem";
@@ -140,7 +148,7 @@
     listElement.setAttribute("data-id", item.id);
     listElement.setAttribute("ondblclick", "TodosData.makeItemEditable(this)");
     listElement.innerHTML = item.value + this.listItemInnerHTML;
-    let todoList = document.getElementsByClassName("todos__list")[0];
+    var todoList = document.getElementsByClassName("todos__list")[0];
     todoList.appendChild(listElement);
   };
 
@@ -149,8 +157,12 @@
    * from 'tempTodos' array.
    */
   TodosData.prototype._createAllTodoItems = function(tempTodos) {
-    tempTodos.forEach(tempTodo => {
-      this.todos.push(new ListItem(tempTodo.id, tempTodo.value, tempTodo.done));
+    var _this = this;
+    tempTodos.forEach(function(tempTodo) {
+      // 'this' is 'undefined' here.
+      _this.todos.push(
+        new ListItem(tempTodo.id, tempTodo.value, tempTodo.done)
+      );
     });
     this.numberOfItemsLeft = this.todos.reduce(this._getNumberOfItemsLeft, 0);
     this.counter = this.todos[this.todos.length - 1].id + 1;
@@ -171,16 +183,19 @@
    * from 'todos' array.
    */
   TodosData.prototype._createAllListItems = function() {
-    this.todos.forEach(todo => this._createListItem(todo));
+    var _this = this;
+    this.todos.forEach(function(todo) {
+      _this._createListItem(todo);
+    });
   };
 
   /**
    * This function gets a 'todo' item from 'todos' array.
    */
   TodosData.prototype._getTodoItem = function(id) {
-    for (let todo of this.todos) {
-      if (todo.id === id) {
-        return todo;
+    for (var i = 0; i < this.todos.length; i++) {
+      if (this.todos[i].id === id) {
+        return this.todos[i];
       }
     }
   };
@@ -189,9 +204,9 @@
    * This function updates a 'todo' item in 'todos' array.
    */
   TodosData.prototype._updateTodoItem = function(fieldToUpdate, id, newValue) {
-    for (let todo of this.todos) {
-      if (todo.id === id) {
-        todo[fieldToUpdate] = newValue;
+    for (var i = 0; i < this.todos.length; i++) {
+      if (this.todos[i].id === id) {
+        this.todos[i][fieldToUpdate] = newValue;
         if (fieldToUpdate === "done") {
           this.numberOfItemsLeft = this.todos.reduce(
             this._getNumberOfItemsLeft,
@@ -207,16 +222,17 @@
    * This function updates the list item in the DOM.
    */
   TodosData.prototype._updateListItem = function(listItem) {
-    let idListItem = parseInt(listItem.getAttribute("data-id"), 10);
-    let item = this._getTodoItem(idListItem);
+    var idListItem = this._getIdOfListItem(listItem);
+    var item = this._getTodoItem(idListItem);
+    var classesListItem;
     if (item.done) {
-      let classesListItem =
+      classesListItem =
         this.idOfStatusButton === 1
           ? "todos__listitem todos__listitem--cleared todos__listitem--hidden"
           : "todos__listitem todos__listitem--cleared";
       listItem.setAttribute("class", classesListItem);
     } else {
-      let classesListItem =
+      classesListItem =
         this.idOfStatusButton === 2
           ? "todos__listitem todos__listitem--hidden"
           : "todos__listitem";
@@ -228,8 +244,8 @@
    * This function updates all 'todo' items in 'todos' array.
    */
   TodosData.prototype._updateAllTodoItems = function(fieldToUpdate, newValue) {
-    for (let todo of this.todos) {
-      todo[fieldToUpdate] = newValue;
+    for (var i = 0; i < this.todos.length; i++) {
+      this.todos[i][fieldToUpdate] = newValue;
     }
     this.numberOfItemsLeft = this.todos.reduce(this._getNumberOfItemsLeft, 0);
   };
@@ -239,18 +255,17 @@
    * the Status Button clicked.
    */
   TodosData.prototype._updateAllListItems = function() {
-    let listItems = document.getElementsByClassName("todos__listitem");
-    listItems = [...listItems];
-    listItems.forEach(listItem => {
-      this._updateListItem(listItem);
-    });
+    var listItems = document.getElementsByClassName("todos__listitem");
+    for (var i = 0; i < listItems.length; i++) {
+      this._updateListItem(listItems[i]);
+    }
   };
 
   /**
    * This function deletes a 'todo' item from 'todos' array.
    */
   TodosData.prototype._deleteTodoItem = function(id) {
-    for (let i = 0; i < this.todos.length; i++) {
+    for (var i = 0; i < this.todos.length; i++) {
       if (this.todos[i].id === id) {
         this.todos.splice(i, 1);
         break;
@@ -264,7 +279,7 @@
    * from 'todos' array.
    */
   TodosData.prototype._deleteAllDoneTodoItems = function() {
-    for (let i = 0; i < this.todos.length; i++) {
+    for (var i = 0; i < this.todos.length; i++) {
       if (this.todos[i].done === true) {
         this.todos.splice(i, 1);
         i--;
@@ -278,25 +293,27 @@
    * from the DOM.
    */
   TodosData.prototype._deleteAllDoneListItems = function() {
-    let listItems = document.getElementsByClassName("todos__listitem");
-    [...listItems]
-      .filter(listItem => {
-        let listItemId = parseInt(listItem.getAttribute("data-id"), 10);
-        for (let todo of this.todos) {
-          if (todo.id === listItemId) {
-            return false;
-          }
+    var listItems = document.getElementsByClassName("todos__listitem");
+    for (var i = 0; i < listItems.length; i++) {
+      var listItemId = this._getIdOfListItem(listItems[i]);
+      var deleted = true;
+      for (var j = 0; j < this.todos.length; j++) {
+        if (this.todos[j].id === listItemId) {
+          deleted = false;
         }
-        return true;
-      })
-      .forEach(listItem => listItem.remove());
+      }
+      if (deleted) {
+        listItems[i].remove();
+        i--;
+      }
+    }
   };
 
   /*----------------  Add New Item  --------------------*/
   TodosData.prototype.getInput = function(event) {
-    const input = document.getElementsByClassName("newitem__input")[0];
+    var input = document.getElementsByClassName("newitem__input")[0];
     if (event.code === "Enter" && input.value !== "") {
-      let tempItem = new ListItem(this.counter, input.value);
+      var tempItem = new ListItem(this.counter, input.value);
 
       // UPDATE state
       this._createTodoItem(tempItem);
@@ -315,10 +332,10 @@
 
   /*--------  Mark All Items as Completed  -------------*/
   TodosData.prototype.markAllAsCompleted = function() {
-    let labelElement = document.getElementsByClassName(
+    var labelElement = document.getElementsByClassName(
       "newitem__clearitems"
     )[0];
-    let classesLabelElement = labelElement.getAttribute("class");
+    var classesLabelElement = labelElement.getAttribute("class");
     // UPDATE state
     classesLabelElement.indexOf("newitem__clearitems--allitemsselected") === -1
       ? this._updateAllTodoItems("done", true)
@@ -336,9 +353,9 @@
 
   /*------  Mark the selected Item as Completed  -------*/
   TodosData.prototype.setItemAsCompleted = function(node) {
-    let listItem = node.parentNode;
-    let classesListItem = listItem.getAttribute("class");
-    let idListItem = parseInt(listItem.getAttribute("data-id"), 10);
+    var listItem = node.parentNode;
+    var classesListItem = listItem.getAttribute("class");
+    var idListItem = this._getIdOfListItem(listItem);
 
     // UPDATE state
     classesListItem.indexOf("todos__listitem--cleared") === -1
@@ -359,8 +376,8 @@
   TodosData.prototype.makeItemEditable = function(listItem) {
     // UPDATE DOM elements
     // 1. Update edit item
-    let editItem = listItem.getElementsByClassName("todos__edititem")[0];
-    let itemText = listItem.innerText;
+    var editItem = listItem.getElementsByClassName("todos__edititem")[0];
+    var itemText = listItem.innerText;
     editItem.value = itemText.substr(0, itemText.length - 2);
     editItem.setAttribute("class", "todos__edititem todos__edititem--show");
     editItem.focus();
@@ -373,7 +390,7 @@
   };
 
   TodosData.prototype.lostFocus = function(editItem) {
-    let idListItem = parseInt(editItem.parentNode.getAttribute("data-id"), 10);
+    var idListItem = this._getIdOfListItem(editItem.parentNode);
     if (editItem.value !== "") {
       // UPDATE state: todos array
       this._updateTodoItem("value", idListItem, editItem.value);
@@ -399,8 +416,8 @@
 
   /*-----------  Delete the selected Item  -------------*/
   TodosData.prototype.deleteItem = function(node) {
-    let listItem = node.parentNode;
-    let idListItem = parseInt(listItem.getAttribute("data-id"), 10);
+    var listItem = node.parentNode;
+    var idListItem = this._getIdOfListItem(listItem);
 
     // UPDATE state
     this._deleteTodoItem(idListItem);
@@ -427,7 +444,7 @@
     }
 
     // UPDATE state: idOfStatusButton
-    this.idOfStatusButton = parseInt(clickedButton.getAttribute("data-id"), 10);
+    this.idOfStatusButton = this._getIdOfListItem(clickedButton);
 
     // UPDATE DOM
     this._updateAllListItems();
@@ -454,7 +471,7 @@
   };
 
   TodosData.prototype.setTodosFromStorage = function() {
-    let tempTodos = JSON.parse(localStorage.getItem("todos"));
+    var tempTodos = JSON.parse(localStorage.getItem("todos"));
     if (tempTodos.length !== 0) {
       // UPDATE state
       this._createAllTodoItems(tempTodos);
@@ -472,11 +489,11 @@
   window.TodosData = new TodosData();
 })(window);
 
-if (window.addEventListener) {
+if (window.addEventListener)
   window.addEventListener(
     "load",
     TodosData.setTodosFromStorage.bind(TodosData)
   );
-} else {
+else if (window.attachEvent)
   window.attachEvent("onload", TodosData.setTodosFromStorage.bind(TodosData));
-}
+else window.onload = TodosData.setTodosFromStorage.bind(TodosData);
