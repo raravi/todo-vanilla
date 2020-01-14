@@ -1,7 +1,13 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8" />
   <head>
     <title>todos - vanilla</title>
     <link rel="stylesheet" href="main.css" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="cleartype" content="on" />
   </head>
   <body>
     <div class="container">
@@ -9,8 +15,8 @@
         <h1 class="header">todos</h1>
       </header>
       <section class="newitem">
-        <input type="text" name="item" class="newitem__input" placeholder="What needs to be done?" onkeyup="getInput(event)" />
-        <label class="newitem__clearitems" onclick="markAllAsCompleted()" ></label>
+        <input type="text" name="item" class="newitem__input" placeholder="What needs to be done?" onkeyup="TodosData.getInput(event)" />
+        <label class="newitem__clearitems" onclick="TodosData.markAllAsCompleted()" ></label>
       </section>
       <section class="todos">
         <ul class="todos__list">
@@ -18,38 +24,15 @@
         <div class="todos__statusbar">
           <p class="todos__statusleft"></p>
           <div class="todos__statuscenter">
-            <button class="todos_statusbutton todos_statusbutton--selected" data-id="0" onclick="onClickStatusButton(this)">All</button>
-            <button class="todos_statusbutton" data-id="1" onclick="onClickStatusButton(this)">Active</button>
-            <button class="todos_statusbutton" data-id="2" onclick="onClickStatusButton(this)">Completed</button>
+            <button class="todos_statusbutton todos_statusbutton--selected" data-id="0" onclick="TodosData.onClickStatusButton(this)">All</button>
+            <button class="todos_statusbutton" data-id="1" onclick="TodosData.onClickStatusButton(this)">Active</button>
+            <button class="todos_statusbutton" data-id="2" onclick="TodosData.onClickStatusButton(this)">Completed</button>
           </div>
-          <p class="todos__statusright" onclick="clearCompletedItems()">Clear completed</p>
+          <p class="todos__statusright" onclick="TodosData.clearCompletedItems()">Clear completed</p>
         </div>
         <div class="todos__endofstatus">
         </div>
       </section>
-      <!--
-      <section class="newitem">
-        <input type="text" name="item" class="newitem__input" placeholder="What needs to be done?" />
-        <label class="newitem__clearitems newitem__clearitems--hasitems newitem__clearitems--allitemsselected"></label>
-      </section>
-      <section class="todos todos--itemspresent">
-        <ul class="todos__list">
-          <li class="todos__listitem todos__listitem--cleared">aaa<div class="todos__toggleitem"></div><div class="todos__deleteitem">x</div></li>
-          <li class="todos__listitem">bbb<div class="todos__deleteitem">x</div></li>
-        </ul>
-        <div class="todos__statusbar">
-          <p class="todos__statusleft">2 items left</p>
-          <div class="todos__statuscenter">
-            <button class="todos_statusbutton todos_statusbutton--selected">All</button>
-            <button class="todos_statusbutton">Active</button>
-            <button class="todos_statusbutton">Completed</button>
-          </div>
-          <p class="todos__statusright todos__statusright--itemsselected">Clear completed</p>
-        </div>
-        <div class="todos__endofstatus">
-        </div>
-      </section>
-      -->
     </div>
     <script async src="main.js"></script>
   </body>
