@@ -229,7 +229,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.todos_statusbutton {
+.todos__statusbutton {
   color: inherit;
   font-family: inherit;
 	font-weight: inherit;
@@ -241,12 +241,13 @@ body {
   border: 1px solid #fff;
 }
 
-.todos_statusbutton:hover {
+.todos__statusbutton:focus,
+.todos__statusbutton:hover {
   border: 1px solid rgba(175, 47, 47, 0.15);
   cursor: pointer;
 }
 
-.todos_statusbutton.todos_statusbutton--selected {
+.todos__statusbutton.todos__statusbutton--selected {
   border: 1px solid rgba(175, 47, 47, 0.3);
 }
 
@@ -259,7 +260,7 @@ body {
   display: block;
 }
 
-.todos__statusright.todos__statusright--itemsselected:hover  {
+.todos__statusright.todos__statusright--itemsselected:hover {
   text-decoration: underline;
   cursor: pointer;
 }

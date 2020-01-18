@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <head>
+    <title>todos - vanilla</title>
+    <link rel="stylesheet" href="main.css" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="cleartype" content="on" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1 class="header">todos</h1>
+      </header>
+      <section class="newitem">
+        <input type="text" name="item" class="newitem__input" placeholder="What needs to be done?" onkeyup="TodosData.getInput(event)" />
+        <label class="newitem__clearitems" onclick="TodosData.markAllAsCompleted()" ></label>
+      </section>
+      <section class="todos">
+        <ul class="todos__list">
+        </ul>
+        <div class="todos__statusbar">
+          <p class="todos__statusleft"></p>
+          <div class="todos__statuscenter">
+            <button class="todos__statusbutton todos__statusbutton--selected" data-id="0" onclick="TodosData.onClickStatusButton(this)">All</button>
+            <button class="todos__statusbutton" data-id="1" onclick="TodosData.onClickStatusButton(this)">Active</button>
+            <button class="todos__statusbutton" data-id="2" onclick="TodosData.onClickStatusButton(this)">Completed</button>
+          </div>
+          <p class="todos__statusright" onclick="TodosData.clearCompletedItems()">Clear completed</p>
+        </div>
+        <div class="todos__endofstatus">
+        </div>
+      </section>
+    </div>
+    <script async src="main.js"></script>
+  </body>
+</html>

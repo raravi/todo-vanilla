@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babel": "./node_modules/.bin/babel src --out-dir lib"
+    "babel": "./node_modules/.bin/babel ES6 --out-dir ES5transpiled"
   },
   "repository": {
     "type": "git",

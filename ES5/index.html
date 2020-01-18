@@ -24,9 +24,9 @@
         <div class="todos__statusbar">
           <p class="todos__statusleft"></p>
           <div class="todos__statuscenter">
-            <button class="todos_statusbutton todos_statusbutton--selected" data-id="0" onclick="TodosData.onClickStatusButton(this)">All</button>
-            <button class="todos_statusbutton" data-id="1" onclick="TodosData.onClickStatusButton(this)">Active</button>
-            <button class="todos_statusbutton" data-id="2" onclick="TodosData.onClickStatusButton(this)">Completed</button>
+            <button class="todos__statusbutton todos__statusbutton--selected" data-id="0" onclick="TodosData.onClickStatusButton(this)">All</button>
+            <button class="todos__statusbutton" data-id="1" onclick="TodosData.onClickStatusButton(this)">Active</button>
+            <button class="todos__statusbutton" data-id="2" onclick="TodosData.onClickStatusButton(this)">Completed</button>
           </div>
           <p class="todos__statusright" onclick="TodosData.clearCompletedItems()">Clear completed</p>
         </div>
@@ -34,6 +34,6 @@
         </div>
       </section>
     </div>
-    <script async src="main-es5.js"></script>
+    <script async src="main.js"></script>
   </body>
 </html>
