@@ -2,24 +2,24 @@
 
 A simple ToDo web app using only javascript!
 
-This project is written to highlight the differences between ES5 / ES6 code. And provide a easy reference to refactor the same app into MVC pattern.
+This project is written to highlight the differences between ES5 / ES6 code. And provide an easy reference to refactor the same app into MVC pattern.
 
 It is motivated by [todomvc](http://todomvc.com), and conducted as an exercise to understand the differences of each method followed.
 
 For all methods,
-* Semantic HTML elements used for better organization of code.
-* [BEM](http://getbem.com/) used to write CSS. BEM helped to incorporate changes to the design of the app with minimal updates to the CSS.
+* **Semantic HTML** elements used for better organization of code.
+* [BEM](http://getbem.com/) used to write CSS. **BEM** helped to incorporate changes to the design of the app with minimal updates to the CSS.
 
 ## Method 1: ES5
 
-The first iteration was used to get Todo app working as fast as possible. The javascript was written in classical style. There is no separation of UI/Business Logic/Data.
+The first iteration was used to get Todo app working as fast as possible. The javascript was written in classical style. There is no separation of **UI/Business Logic/Data**.
 
 ## Method 2: ES6
 
 Using ES6 features led to cleaner code.
-* const / let instead of var variables.
-* for..of loop is more natural.
-* arrow functions don't need 'this' to be set separately.
+* `const / let` instead of `var` variables.
+* `for..of` loop is more natural.
+* arrow functions don't need `this` to be set separately.
 * spread operator makes life much easier :)
 
 ## Method 3: MVC pattern
