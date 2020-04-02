@@ -11,12 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/raravi/todo-vanilla.git"
   },
-  "author": "Amith Raravi",
+  "author": "Amith Raravi <amith.raravi@gmail.com>",
+  "homepage": "https://raravi.github.io/todo-vanilla/",
   "license": "The MIT License (MIT)",
-  "bugs": {
-    "url": "https://github.com/raravi/todo-vanilla/issues"
-  },
-  "homepage": "https://github.com/raravi/todo-vanilla#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
