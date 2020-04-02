@@ -13,7 +13,7 @@
   },
   "author": "Amith Raravi <amith.raravi@gmail.com>",
   "homepage": "https://raravi.github.io/todo-vanilla/",
-  "license": "The MIT License (MIT)",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
