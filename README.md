@@ -40,3 +40,5 @@ This folder contains the transpiled output of the ES6 Javascript code. It is gen
 * Which ES6 features add the most code?
 
 By knowing these, we get an idea of the benefits of using ES6 features too!
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y21VCIL)
