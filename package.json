@@ -15,9 +15,9 @@
   "homepage": "https://raravi.github.io/todo-vanilla/",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.4"
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1"
